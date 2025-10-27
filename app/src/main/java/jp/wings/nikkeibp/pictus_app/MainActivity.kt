@@ -30,7 +30,9 @@ import java.nio.file.WatchEvent
 
 enum class AppPage {
     Home,
-    Task
+    Task,
+    Record,
+    MyPage
 }
 
 class MainActivity : ComponentActivity() {
@@ -52,6 +54,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable (route = AppPage.Task.name) {
                             TaskScreen(navController = navController)
+                        }
+                        composable (route = AppPage.Record.name) {
+                            RecordScreen(navController = navController)
+                        }
+                        composable (route = AppPage.MyPage.name) {
+                            MyPage(navController = navController)
                         }
                     }
                 }
@@ -90,6 +98,20 @@ fun TaskScreen (navController: NavHostController,modifier: Modifier = Modifier) 
 }
 
 @Composable
+fun RecordScreen (navController: NavHostController,modifier: Modifier = Modifier) {
+    Box {
+        NavigationContent(navController = navController)
+    }
+}
+
+@Composable
+fun MyPage (navController: NavHostController, modifier: Modifier = Modifier) {
+    Box {
+        NavigationContent(navController = navController)
+    }
+}
+
+@Composable
 fun NavigationContent (navController: NavHostController,modifier: Modifier = Modifier) {
     Row (
         modifier = Modifier
@@ -104,10 +126,10 @@ fun NavigationContent (navController: NavHostController,modifier: Modifier = Mod
         Button(onClick = {navController.navigate(AppPage.Task.name)}) {
             Text("タスク")
         }
-        Button(onClick = {}) {
+        Button(onClick = {navController.navigate(AppPage.Record.name)}) {
             Text("記録")
         }
-        Button(onClick = {}) {
+        Button(onClick = {navController.navigate(AppPage.MyPage.name)}) {
             Text("マイページ")
         }
     }

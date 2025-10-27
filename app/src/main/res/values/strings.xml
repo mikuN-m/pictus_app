@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">pictus_app</string>
+<!--    ナビボタン-->
+    <string name="nav_home">ホーム</string>
+    <string name="nav_task">タスク</string>
+    <string name="nav_record">記録</string>
+    <string name="nav_mypage">マイページ</string>
+
+<!--    ホーム画面-->
+    <string name="home_todo_title">今日のやること</string>
+
+<!--    タスク画面-->
 </resources>
