@@ -68,7 +68,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // --- ここから追加 ---
-    val roomVersion = "2.6.1"
+    val roomVersion = "2.8.3"
 
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
