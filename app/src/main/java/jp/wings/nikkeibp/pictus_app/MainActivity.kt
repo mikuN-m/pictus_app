@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import jp.wings.nikkeibp.pictus_app.data.MyTasksDao
+import jp.wings.nikkeibp.pictus_app.data.MyTasksDataBase
 import jp.wings.nikkeibp.pictus_app.ui.theme.Pictus_appTheme
 import java.nio.file.WatchEvent
 
@@ -38,6 +41,11 @@ enum class AppPage {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //データベース
+        val db = MyTasksDataBase.getMyTasksDatabase(this)
+        val dao = db.MyTasksDao()
+
         enableEdgeToEdge()
         setContent {
             Pictus_appTheme {
@@ -53,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController = navController)
                         }
                         composable (route = AppPage.Task.name) {
-                            TaskScreen(navController = navController)
+                            TaskScreen(navController = navController,dao,)
                         }
                         composable (route = AppPage.Record.name) {
                             RecordScreen(navController = navController)
@@ -87,10 +95,16 @@ fun HomeScreen (navController: NavHostController, modifier: Modifier = Modifier)
 }
 
 @Composable
-fun TaskScreen (navController: NavHostController,modifier: Modifier = Modifier) {
+fun TaskScreen (navController: NavHostController, dao: MyTasksDao,modifier: Modifier = Modifier) {
     Box {
-        Card {
-
+        Column (
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "task"
+            )
         }
 
         NavigationContent(navController = navController)
@@ -135,11 +149,12 @@ fun NavigationContent (navController: NavHostController,modifier: Modifier = Mod
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Pictus_appTheme {
         val navController = rememberNavController()
-        HomeScreen(navController = navController)
+
     }
 }

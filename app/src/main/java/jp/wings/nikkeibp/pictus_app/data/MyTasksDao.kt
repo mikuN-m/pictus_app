@@ -1,15 +1,16 @@
 package jp.wings.nikkeibp.pictus_app.data
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MyTasksDao {
     @Query("SELECT * FROM tasks")
-    fun getAll(): List<Task>
+    fun getAll(): Flow<List<MyTasks>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(task: Task)
+    @Insert
+    suspend fun insertTask(myTask: MyTasks)
 
     @Delete
-    fun delete(task: Task)
+    suspend fun deleteAllMyTasks(allMyTasks: List<MyTasks>)
 }
