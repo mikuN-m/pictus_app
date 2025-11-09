@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,16 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,6 +35,7 @@ import jp.wings.nikkeibp.pictus_app.data.MyTasksDao
 import jp.wings.nikkeibp.pictus_app.data.MyTasksDataBase
 import jp.wings.nikkeibp.pictus_app.ui.theme.Pictus_appTheme
 import java.nio.file.WatchEvent
+import kotlin.getValue
 
 enum class AppPage {
     Home,
@@ -39,12 +45,10 @@ enum class AppPage {
 }
 
 class MainActivity : ComponentActivity() {
+    val taskViewModel: TaskViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //データベース
-        val db = MyTasksDataBase.getMyTasksDatabase(this)
-        val dao = db.MyTasksDao()
 
         enableEdgeToEdge()
         setContent {
@@ -61,7 +65,7 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(navController = navController)
                         }
                         composable (route = AppPage.Task.name) {
-                            TaskScreen(navController = navController,dao,)
+                            TaskScreen(navController = navController,taskViewModel)
                         }
                         composable (route = AppPage.Record.name) {
                             RecordScreen(navController = navController)
@@ -85,7 +89,7 @@ fun HomeScreen (navController: NavHostController, modifier: Modifier = Modifier)
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "testですよ",
+                text = "homeですよ",
                 modifier = Modifier
             )
         }
@@ -95,7 +99,9 @@ fun HomeScreen (navController: NavHostController, modifier: Modifier = Modifier)
 }
 
 @Composable
-fun TaskScreen (navController: NavHostController, dao: MyTasksDao,modifier: Modifier = Modifier) {
+fun TaskScreen (navController: NavHostController, viewModel: TaskViewModel,modifier: Modifier = Modifier) {
+    val taskList by viewModel.allTasks.collectAsState(initial = emptyList())
+
     Box {
         Column (
             modifier = Modifier.fillMaxSize(),
@@ -156,5 +162,7 @@ fun GreetingPreview() {
     Pictus_appTheme {
         val navController = rememberNavController()
 
+        // テスト用のタスクページと本番用のタスクページを使い分ける
+        HomeScreen(navController)
     }
 }

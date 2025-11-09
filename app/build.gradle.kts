@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") // ← これだけ追加！
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 android {
@@ -42,10 +42,6 @@ android {
         compose = true
     }
 
-    // ✅ Composeコンパイラの指定（警告は出るけどOK）
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
-    }
 }
 
 dependencies {
@@ -75,5 +71,5 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // ViewModel (Compose 用)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
 }
