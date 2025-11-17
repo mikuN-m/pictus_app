@@ -33,6 +33,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import jp.wings.nikkeibp.pictus_app.data.MyTasksDao
 import jp.wings.nikkeibp.pictus_app.data.MyTasksDataBase
+import jp.wings.nikkeibp.pictus_app.ui.screen.Home
+import jp.wings.nikkeibp.pictus_app.ui.screen.MyPage
+import jp.wings.nikkeibp.pictus_app.ui.screen.Record
+import jp.wings.nikkeibp.pictus_app.ui.screen.Task
 import jp.wings.nikkeibp.pictus_app.ui.theme.Pictus_appTheme
 import java.nio.file.WatchEvent
 import kotlin.getValue
@@ -62,13 +66,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         //ホーム画面
                         composable (route = AppPage.Home.name) {
-                            HomeScreen(navController = navController)
+                            Home(navController = navController)
                         }
                         composable (route = AppPage.Task.name) {
-                            TaskScreen(navController = navController,taskViewModel)
+                            Task(navController = navController,taskViewModel)
                         }
                         composable (route = AppPage.Record.name) {
-                            RecordScreen(navController = navController)
+                            Record(navController = navController)
                         }
                         composable (route = AppPage.MyPage.name) {
                             MyPage(navController = navController)
@@ -80,82 +84,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun HomeScreen (navController: NavHostController, modifier: Modifier = Modifier) {
-    Box {
-        Column (
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "homeですよ",
-                modifier = Modifier
-            )
-        }
-
-        NavigationContent(navController = navController)
-    }
-}
-
-@Composable
-fun TaskScreen (navController: NavHostController, viewModel: TaskViewModel,modifier: Modifier = Modifier) {
-    val taskList by viewModel.allTasks.collectAsState(initial = emptyList())
-
-    Box {
-        Column (
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "task"
-            )
-        }
-
-        NavigationContent(navController = navController)
-    }
-}
-
-@Composable
-fun RecordScreen (navController: NavHostController,modifier: Modifier = Modifier) {
-    Box {
-        NavigationContent(navController = navController)
-    }
-}
-
-@Composable
-fun MyPage (navController: NavHostController, modifier: Modifier = Modifier) {
-    Box {
-        NavigationContent(navController = navController)
-    }
-}
-
-@Composable
-fun NavigationContent (navController: NavHostController,modifier: Modifier = Modifier) {
-    Row (
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        Button(onClick = {navController.navigate(AppPage.Home.name)}) {
-            Text("ホーム")
-        }
-        Button(onClick = {navController.navigate(AppPage.Task.name)}) {
-            Text("タスク")
-        }
-        Button(onClick = {navController.navigate(AppPage.Record.name)}) {
-            Text("記録")
-        }
-        Button(onClick = {navController.navigate(AppPage.MyPage.name)}) {
-            Text("マイページ")
-        }
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
@@ -163,6 +91,6 @@ fun GreetingPreview() {
         val navController = rememberNavController()
 
         // テスト用のタスクページと本番用のタスクページを使い分ける
-        HomeScreen(navController)
+        Home(navController)
     }
 }
