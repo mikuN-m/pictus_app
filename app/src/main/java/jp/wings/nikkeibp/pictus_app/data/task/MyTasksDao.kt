@@ -1,4 +1,4 @@
-package jp.wings.nikkeibp.pictus_app.data
+package jp.wings.nikkeibp.pictus_app.data.task
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
